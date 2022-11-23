@@ -6,9 +6,13 @@ using UnityEngine.Events;
 public class GestureScript : MonoBehaviour
 {
     private static GestureScript script;
+    public enum GestureEvent { None, PinchZoom, Drag }
+    GestureEvent currGestureEvent = GestureEvent.None;
+    GestureEvent prevGestureEvent = GestureEvent.None;
 
-    private UnityEvent<float> OnPinchZoom;
-    private UnityEvent<Vector2> OnDrag;
+    public static UnityEvent<float> OnPinchZoom => script.onPinchZoom;
+
+    private UnityEvent<float> onPinchZoom;
     void Awake()
     {
         if (script == null)
@@ -18,33 +22,22 @@ public class GestureScript : MonoBehaviour
 
         DontDestroyOnLoad(this);
 
-        OnPinchZoom = new UnityEvent<float>();
-        OnDrag = new UnityEvent<Vector2>();
+        onPinchZoom = new UnityEvent<float>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount == 2)
+        if (Input.touchCount == 1)
+            OneFingerGestureCheck();
+        else if (Input.touchCount == 2)
             TwoFingerGestureCheck();
-    }
-
-    #region Events
-    public static void SubscribeToPinch(UnityAction<float> action, bool subscribe = true)
-    {
-        if (action != null)
-        {
-            if(subscribe)
-                script.OnPinchZoom.AddListener(action);
-            else
-                script.OnPinchZoom.RemoveListener(action);
-        }
         else
-            Debug.LogError("SubscribeToPinch Subscribe Action is null!");
+            SetGestureEvent(GestureEvent.None);
     }
-    #endregion
 
     #region Gestures
+    
     void TwoFingerGestureCheck()
     {
         Touch touchZero = Input.GetTouch(0);
@@ -58,19 +51,119 @@ public class GestureScript : MonoBehaviour
 
         float diff = currMagnitude - prevMagnitude;
 
-        if (Mathf.Abs(diff) >= 30f)
-            OnPinchZoom.Invoke(diff);
-        else
+        if (Mathf.Abs(diff) >= 12f)
         {
-            Vector2 midpt = new Vector3( (touchZero.position.x + touchZOne.position.x)/2, (touchZero.position.y + touchZOne.position.y) / 2);
-            Vector2 prevmidpt = new Vector3( (touchZeroPrevPos.x + touchOnePrevPos.x)/2, (touchZeroPrevPos.y + touchOnePrevPos.y) / 2);
-            OnDrag.Invoke(midpt - prevmidpt);
+            if (IsCurrGestureEvent(GestureEvent.Drag) || IsCurrGestureEvent(GestureEvent.None))
+            {
+                SetGestureEvent(GestureEvent.Drag);
+                onPinchZoom.Invoke(diff);
+            }
         }
     }
 
+    struct DragData
+    {
+        public Transform objTransform;
+        public float setTimer;
+
+        public float currTimer;
+        public bool touchBeginHit;
+        public bool canDrag;
+
+        public UnityAction beginDrag;
+        public UnityAction<Vector2> duringDrag;
+        public UnityAction endDrag;
+    }
+
+    public static void RegisterDragCallbacks(Transform target, UnityAction beginDrag, UnityAction<Vector2> dragging, UnityAction endDrag, float beginDragTimer = 1)
+    {
+        if (script.recordedobj == null)
+            script.recordedobj = new List<DragData>();
+        DragData data = new DragData();
+        data.objTransform = target;
+        data.setTimer = beginDragTimer;
+        data.beginDrag = beginDrag;
+        data.duringDrag = dragging;
+        data.endDrag = endDrag;
+
+        data.currTimer = 0;
+        data.canDrag = false;
+        data.touchBeginHit = false;
+        
+        script.recordedobj.Add(data);
+    }
+    List<DragData> recordedobj;
+    void OneFingerGestureCheck()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+
+        RaycastHit info;
+        if (Physics.Raycast(ray, out info))
+        {
+            foreach (var obj in recordedobj)
+            {
+                DragCheck(obj, info);
+            }
+        }
+    }
+
+    void DragCheck(DragData target, RaycastHit info)
+    {
+        Touch touch = Input.GetTouch(0); // get first touch since touch count is greater than zero
+        if (touch.phase == TouchPhase.Began)
+        {
+            if (info.collider.transform.IsChildOf(target.objTransform) || info.collider.transform == target.objTransform)
+            {
+                target.touchBeginHit = true;
+                target.beginDrag?.Invoke();
+            }
+        }
+        
+        else if (touch.phase == TouchPhase.Canceled || touch.phase == TouchPhase.Ended)
+        {
+            target.currTimer = 0;
+            target.touchBeginHit = false;
+            target.canDrag = false;
+
+            target.endDrag?.Invoke();
+        }
+        else
+        {
+            if (target.canDrag)
+            {
+                target.duringDrag?.Invoke(touch.deltaPosition);
+            }
+            else
+            {
+                if (target.touchBeginHit)
+                {
+                    if (target.currTimer >= target.setTimer)
+                    {
+                        target.canDrag = true;
+                    }
+                    else
+                    {
+                        target.currTimer += Time.deltaTime;
+                    }
+                }
+            }
+        }
+    }
     Vector2 GetPrevTouchPosition(Touch touch) 
     {
         return touch.position - touch.deltaPosition;
+    }
+    void SetGestureEvent(GestureEvent g_Event)
+    {
+        if (currGestureEvent != g_Event)
+        {
+            prevGestureEvent = currGestureEvent;
+            currGestureEvent = g_Event;
+        }
+    }
+    bool IsCurrGestureEvent(GestureEvent g_Event)
+    {
+        return currGestureEvent == g_Event;
     }
     #endregion
 }
