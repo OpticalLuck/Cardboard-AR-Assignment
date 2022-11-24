@@ -8,35 +8,19 @@ using TMPro;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-public class PlaceARObjectButton : MonoBehaviour
+public class ARObjectSpawnerScript : MonoBehaviour
 {
-    private ARRaycastManager raycastManager;
-    private Button setButton;
-    private ARObject prefabInstance;
-    [SerializeField] private ARObject spawnPrefab;
-    [SerializeField] private TMP_Text text;
-
-    // Start is called before the first frame update
-    void Start()
+    public static bool SpawnObject(ARRaycastManager raycastManager, ref ARObject prefabInstance, ARObject prefab)
     {
-        raycastManager = FindObjectOfType<ARRaycastManager>();
+        if (prefabInstance != null)
+            return false;
 
-        setButton = GetComponent<Button>();
-
-        prefabInstance = Instantiate(spawnPrefab);
-        prefabInstance.gameObject.SetActive(false);
-        setButton.onClick.AddListener(SetPrefabLocation);
-    }
-
-
-
-    private void SetPrefabLocation()
-    {
         var hitList = new List<ARRaycastHit>();
-
         // Raycast from the center of the screen which should hit only detected surfaces.
         if (raycastManager.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hitList, TrackableType.PlaneWithinBounds | TrackableType.PlaneWithinPolygon))
         {
+            prefabInstance = Instantiate(prefab);
+
             // In the instance is inactive, enable it.
             if (!prefabInstance.gameObject.activeInHierarchy)
             {
@@ -48,15 +32,10 @@ public class PlaceARObjectButton : MonoBehaviour
             // Position instance in the closest hit point.
             prefabInstance.transform.position = hitPoint.pose.position;
             prefabInstance.transform.up = hitPoint.pose.up;
+            return true;
         }
-        else
-        {
-            // In the instance is active, disable it.
-            if (prefabInstance.gameObject.activeInHierarchy)
-            {
-                prefabInstance.gameObject.SetActive(false);
-            }
-        }
+
+        return false;
     }
 
 }

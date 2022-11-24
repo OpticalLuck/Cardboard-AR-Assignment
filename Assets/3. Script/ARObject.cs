@@ -16,16 +16,7 @@ public class ARObject : MonoBehaviour
         raycastManager = FindObjectOfType<ARRaycastManager>();
 
         GestureScript.OnPinchZoom.AddListener(OnTouchPinch);
-        GestureScript.RegisterDragCallbacks(transform, () => { FindObjectOfType<TMPro.TMP_Text>().text = "HI" + Time.deltaTime.ToString(); }, 
-            (delta) =>
-            {
-                FindObjectOfType<TMPro.TMP_Text>().text = delta.ToString();
-                Vector3 deltapos = new Vector3(delta.x, 0, delta.y);
-                transform.position = Vector3.Lerp(transform.position, transform.position + deltapos, Time.deltaTime);
-            }, 
-            () => {
-                FindObjectOfType<TMPro.TMP_Text>().text = "bye" + Time.deltaTime.ToString();
-            });
+        GestureScript.RegisterDragCallbacks(transform, null, OnTouchDrag, null);
     }
 
     void Update()
@@ -79,6 +70,12 @@ public class ARObject : MonoBehaviour
         */
     }
 
+    private void OnTouchDrag(Vector2 delta)
+    {
+        delta = delta * 0.01f;
+        Vector3 deltapos = new Vector3(delta.x, 0, delta.y);
+        transform.position = Vector3.Lerp(transform.position, transform.position + deltapos, Time.deltaTime);
+    }
     private void OnTouchPinch(float diff)
     {
         if (gameObject.activeSelf)

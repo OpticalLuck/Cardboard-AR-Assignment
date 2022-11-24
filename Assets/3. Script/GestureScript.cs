@@ -100,14 +100,16 @@ public class GestureScript : MonoBehaviour
         RaycastHit info;
         if (Physics.Raycast(ray, out info))
         {
-            foreach (var obj in recordedobj)
+            for(int i = 0; i< recordedobj.Count;i++)
             {
-                DragCheck(obj, info);
+                var tmp = recordedobj[i];
+                DragCheck(ref tmp, info);
+                recordedobj[i] = tmp;
             }
         }
     }
 
-    void DragCheck(DragData target, RaycastHit info)
+    void DragCheck(ref DragData target, RaycastHit info)
     {
         Touch touch = Input.GetTouch(0); // get first touch since touch count is greater than zero
         if (touch.phase == TouchPhase.Began)
