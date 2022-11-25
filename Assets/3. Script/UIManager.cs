@@ -11,10 +11,16 @@ public class UIManager : MonoBehaviour
 
     [Header("ARObject Spawning")]
     private ARObject objectInstance;
+    [SerializeField] private GameObject spawnLayer;
     [SerializeField] private ARObject aRObjectPrefab;
     [SerializeField] private Button spawnObjectButton;
     [SerializeField] private Button despawnObjectButton;
-    
+
+    [Header("Body System Select")]
+    [SerializeField] private GameObject selectionLayer;
+    [SerializeField] private GameObject selectionGroup;
+    private List<Button> selectionButtons = new List<Button>();
+
     void Awake()
     {
         raycastManager = FindObjectOfType<ARRaycastManager>();
@@ -22,21 +28,53 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        spawnObjectButton.onClick.AddListener(() =>
+        spawnObjectButton.onClick.AddListener(() => 
         {
             if(ARObjectSpawnerScript.SpawnObject(raycastManager, ref objectInstance, aRObjectPrefab))
-            {
-                spawnObjectButton.gameObject.SetActive(false);
-                despawnObjectButton.gameObject.SetActive(true);
-            }
+                OnObjectSpawned();
         });
+        despawnObjectButton.onClick.AddListener(OnObjectDestoy);
 
-        despawnObjectButton.gameObject.SetActive(false);
-        despawnObjectButton.onClick.AddListener(() => { 
-            Destroy(objectInstance.gameObject); 
-            despawnObjectButton.gameObject.SetActive(false); 
-            spawnObjectButton.gameObject.SetActive(true);
-        });
+        foreach (var btn in selectionGroup.GetComponentsInChildren<Button>(true))
+            selectionButtons.Add(btn);
+
+#if DEBUG
+        objectInstance = FindObjectOfType<ARObject>();
+        if(objectInstance != null)
+            LinkButtonToObjectInstance();
+#endif
     }
 
+    void OnObjectSpawned()
+    {
+        LinkButtonToObjectInstance();
+        ToggleUILayer(selectionLayer);
+    }
+
+    void OnObjectDestoy()
+    {
+        Destroy(objectInstance.gameObject);
+        ToggleUILayer(spawnLayer);
+
+        foreach (var btn in selectionButtons)
+            btn.onClick.RemoveAllListeners();
+    }
+
+    void LinkButtonToObjectInstance()
+    {
+        int i = 1;
+        foreach (var btn in selectionButtons)
+        {
+            int temp = i;
+            btn.onClick.AddListener(() => objectInstance.FocusOnSystem(temp, 0.8f));
+            i++;
+        }
+    }
+
+    void ToggleUILayer(GameObject uiLayer)
+    {
+        spawnLayer.SetActive(uiLayer == spawnLayer);
+        selectionLayer.SetActive(uiLayer == selectionLayer);
+
+    }
 }

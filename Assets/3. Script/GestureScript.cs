@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using System.Linq;
 public class GestureScript : MonoBehaviour
 {
     private static GestureScript script;
@@ -34,6 +34,8 @@ public class GestureScript : MonoBehaviour
             TwoFingerGestureCheck();
         else
             SetGestureEvent(GestureEvent.None);
+
+        Debug.Log(currGestureEvent.ToString());
     }
 
     #region Gestures
@@ -92,13 +94,17 @@ public class GestureScript : MonoBehaviour
         
         script.recordedobj.Add(data);
     }
+    public static void UnRegisterDragCallbacks(Transform target)
+    {
+        script.recordedobj.RemoveAll(x => x.objTransform == target);
+    }
     List<DragData> recordedobj;
     void OneFingerGestureCheck()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
 
         RaycastHit info;
-        if (Physics.Raycast(ray, out info))
+        if (Physics.Raycast(ray, out info, LayerMask.GetMask("ARObject")))
         {
             for(int i = 0; i< recordedobj.Count;i++)
             {
@@ -120,7 +126,6 @@ public class GestureScript : MonoBehaviour
                 target.beginDrag?.Invoke();
             }
         }
-        
         else if (touch.phase == TouchPhase.Canceled || touch.phase == TouchPhase.Ended)
         {
             target.currTimer = 0;
