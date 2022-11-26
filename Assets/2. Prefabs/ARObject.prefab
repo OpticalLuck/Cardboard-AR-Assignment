@@ -49,8 +49,8 @@ MonoBehaviour:
   - {fileID: 6684916015105805648}
   - {fileID: 3987744775657849924}
   - {fileID: 4779137653831778201}
-  maxPinchScale: 0
-  minPinchScale: 0
+  maxPinchScale: 2
+  minPinchScale: 0.0001
 --- !u!1001 &8670956890801086751
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -14,15 +14,16 @@ public class ARObject : MonoBehaviour
     private ARRaycastManager raycastManager;
 
     [SerializeField] private List<Transform> meshTransforms;
-    [SerializeField] private float maxPinchScale;
     [SerializeField] private float minPinchScale;
+    [SerializeField] private float maxPinchScale;
     private List<MeshMaterialGroup> materialList = new List<MeshMaterialGroup>();
     void Start()
     {
         raycastManager = FindObjectOfType<ARRaycastManager>();
 
-        GestureScript.OnPinchZoom.AddListener(OnTouchPinch);
-        GestureScript.RegisterDragCallbacks(transform, null, OnTouchDrag, null);
+        GestureScript.OnPinchZoom.AddListener(ScaleObject);
+        GestureScript.OnTwoFingerDrag.AddListener(RotateObject);
+        GestureScript.RegisterDragCallbacks(transform, null, MoveObject, null);
 
         foreach (var meshTransform in meshTransforms)
         {
@@ -41,11 +42,12 @@ public class ARObject : MonoBehaviour
 
     private void OnDestroy()
     {
-        GestureScript.OnPinchZoom.RemoveListener(OnTouchPinch);
+        GestureScript.OnPinchZoom.RemoveListener(ScaleObject);
         GestureScript.UnRegisterDragCallbacks(transform);
+        GestureScript.OnTwoFingerDrag.RemoveListener(RotateObject);
     }
 
-    public void FocusOnSystem(int index, float transparencylevel)
+    public void FocusOnSystem(int index)
     {
         if (index >= materialList.Count)
             return;
@@ -54,7 +56,6 @@ public class ARObject : MonoBehaviour
         {
             for (int i = 1; i < materialList.Count; i++)
             {
-                var material = materialList[i];
                 if (i == index)
                 {
                     SetTransparencyInMaterialGroup(i, 1);
@@ -99,14 +100,22 @@ public class ARObject : MonoBehaviour
         }
     }
 
-    private void OnTouchDrag(Vector2 delta)
+    private void MoveObject(Vector2 delta)
     {
         delta = delta * 0.05f;
         Debug.Log(delta);
         Vector3 deltapos = new Vector3(delta.x, 0, delta.y);
         transform.position = Vector3.Lerp(transform.position, transform.position + deltapos, Time.deltaTime);
     }
-    private void OnTouchPinch(float diff)
+
+    private void RotateObject(Vector2 delta)
+    {
+        delta = delta * 0.5f;
+        transform.Rotate(Vector3.down, delta.x, Space.World);
+        transform.Rotate(Vector3.right, delta.y, Space.World);
+    }
+
+    private void ScaleObject(float diff)
     {
         if (gameObject.activeSelf)
         {

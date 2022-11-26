@@ -6,13 +6,16 @@ using System.Linq;
 public class GestureScript : MonoBehaviour
 {
     private static GestureScript script;
-    public enum GestureEvent { None, PinchZoom, Drag }
+    public enum GestureEvent { None, PinchZoom, Drag1, Drag2 }
     GestureEvent currGestureEvent = GestureEvent.None;
     GestureEvent prevGestureEvent = GestureEvent.None;
 
     public static UnityEvent<float> OnPinchZoom => script.onPinchZoom;
+    public static UnityEvent<Vector2> OnTwoFingerDrag => script.onTwoFingerDrag;
 
-    private UnityEvent<float> onPinchZoom;
+    private UnityEvent<float> onPinchZoom = new UnityEvent<float>();
+    private UnityEvent<Vector2> onTwoFingerDrag = new UnityEvent<Vector2>();
+
     void Awake()
     {
         if (script == null)
@@ -21,8 +24,6 @@ public class GestureScript : MonoBehaviour
             Destroy(script);
 
         DontDestroyOnLoad(this);
-
-        onPinchZoom = new UnityEvent<float>();
     }
 
     // Update is called once per frame
@@ -34,12 +35,10 @@ public class GestureScript : MonoBehaviour
             TwoFingerGestureCheck();
         else
             SetGestureEvent(GestureEvent.None);
-
-        Debug.Log(currGestureEvent.ToString());
     }
 
     #region Gestures
-    
+
     void TwoFingerGestureCheck()
     {
         Touch touchZero = Input.GetTouch(0);
@@ -55,10 +54,23 @@ public class GestureScript : MonoBehaviour
 
         if (Mathf.Abs(diff) >= 12f)
         {
-            if (IsCurrGestureEvent(GestureEvent.Drag) || IsCurrGestureEvent(GestureEvent.None))
+            if (CanChangeGestureTo(GestureEvent.PinchZoom))
             {
-                SetGestureEvent(GestureEvent.Drag);
+                SetGestureEvent(GestureEvent.PinchZoom);
                 onPinchZoom.Invoke(diff);
+            }
+        }
+        else
+        {
+            var t0_Dir = touchZero.deltaPosition;
+            var t1_Dir = touchZOne.deltaPosition;
+
+            float minMovement = 5f;
+            bool oneFingerNotMoving = touchZero.deltaPosition.magnitude < minMovement || touchZero.deltaPosition.magnitude < minMovement;
+            if (Vector2.Angle(t0_Dir, t1_Dir) < 25 && !oneFingerNotMoving && CanChangeGestureTo(GestureEvent.Drag2))
+            {
+                SetGestureEvent(GestureEvent.Drag2);
+                onTwoFingerDrag.Invoke(new Vector2((t0_Dir.x + t1_Dir.x) / 2, (t0_Dir.y + t1_Dir.y) / 2));
             }
         }
     }
@@ -76,6 +88,7 @@ public class GestureScript : MonoBehaviour
         public UnityAction<Vector2> duringDrag;
         public UnityAction endDrag;
     }
+    List<DragData> recordedobj;
 
     public static void RegisterDragCallbacks(Transform target, UnityAction beginDrag, UnityAction<Vector2> dragging, UnityAction endDrag, float beginDragTimer = 1)
     {
@@ -91,14 +104,13 @@ public class GestureScript : MonoBehaviour
         data.currTimer = 0;
         data.canDrag = false;
         data.touchBeginHit = false;
-        
+
         script.recordedobj.Add(data);
     }
     public static void UnRegisterDragCallbacks(Transform target)
     {
         script.recordedobj.RemoveAll(x => x.objTransform == target);
     }
-    List<DragData> recordedobj;
     void OneFingerGestureCheck()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
@@ -106,15 +118,20 @@ public class GestureScript : MonoBehaviour
         RaycastHit info;
         if (Physics.Raycast(ray, out info, LayerMask.GetMask("ARObject")))
         {
-            for(int i = 0; i< recordedobj.Count;i++)
+            for (int i = 0; i < recordedobj.Count; i++)
             {
-                var tmp = recordedobj[i];
-                DragCheck(ref tmp, info);
-                recordedobj[i] = tmp;
+                if (CanChangeGestureTo(GestureEvent.Drag1))
+                {
+                    var tmp = recordedobj[i];
+                    SetGestureEvent(GestureEvent.Drag1);
+                    DragCheck(ref tmp, info);
+                    recordedobj[i] = tmp;
+                }
             }
         }
     }
 
+    #endregion
     void DragCheck(ref DragData target, RaycastHit info)
     {
         Touch touch = Input.GetTouch(0); // get first touch since touch count is greater than zero
@@ -156,7 +173,7 @@ public class GestureScript : MonoBehaviour
             }
         }
     }
-    Vector2 GetPrevTouchPosition(Touch touch) 
+    Vector2 GetPrevTouchPosition(Touch touch)
     {
         return touch.position - touch.deltaPosition;
     }
@@ -172,5 +189,9 @@ public class GestureScript : MonoBehaviour
     {
         return currGestureEvent == g_Event;
     }
-    #endregion
+
+    bool CanChangeGestureTo(GestureEvent g_Event)
+    {
+        return IsCurrGestureEvent(GestureEvent.None) || IsCurrGestureEvent(g_Event);
+    }
 }

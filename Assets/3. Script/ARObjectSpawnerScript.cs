@@ -31,7 +31,7 @@ public class ARObjectSpawnerScript : MonoBehaviour
             var hitPoint = hitList[0];
             // Position instance in the closest hit point.
             prefabInstance.transform.position = hitPoint.pose.position;
-            prefabInstance.transform.up = hitPoint.pose.up;
+            //prefabInstance.transform.up = hitPoint.pose.up;
             return true;
         }
 
