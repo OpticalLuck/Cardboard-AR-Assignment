@@ -9,12 +9,9 @@ public class GestureScript : MonoBehaviour
     public enum GestureEvent { None, PinchZoom, Drag1, Drag2 }
     GestureEvent currGestureEvent = GestureEvent.None;
     GestureEvent prevGestureEvent = GestureEvent.None;
-
     public static UnityEvent<float> OnPinchZoom => script.onPinchZoom;
     public static UnityEvent<Vector2> OnTwoFingerDrag => script.onTwoFingerDrag;
-    public static UnityEvent<Vector3> OnDeviceTap => script.onTouchTap;
 
-    private UnityEvent<Vector3> onTouchTap = new UnityEvent<Vector3>();
     private UnityEvent<float> onPinchZoom = new UnityEvent<float>();
     private UnityEvent<Vector2> onTwoFingerDrag = new UnityEvent<Vector2>();
 
@@ -89,14 +86,9 @@ public class GestureScript : MonoBehaviour
         public UnityAction<Vector2> duringDrag;
         //public UnityAction endDrag;
     }
-    List<DragData> recordedobj;
-
-    float tapDurationThreshold = 0.5f;
-    float longtapDuration = 1.0f;
+    List<DragData> recordedobj = new List<DragData>();
     public static void RegisterDragCallbacks(Transform target, UnityAction beginDrag, UnityAction<Vector2> dragging, UnityAction endDrag, float beginDragTimer = 1)
     {
-        if (script.recordedobj == null)
-            script.recordedobj = new List<DragData>();
         DragData data = new DragData();
         data.objTransform = target;
         data.setTimer = beginDragTimer;
@@ -119,7 +111,9 @@ public class GestureScript : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
 
         RaycastHit info;
-        if (Physics.Raycast(ray, out info, LayerMask.GetMask("ARObject")))
+        if (Physics.Raycast(ray: ray,
+            hitInfo: out info,
+            maxDistance: Mathf.Infinity))
         {
             for (int i = 0; i < recordedobj.Count; i++)
             {
@@ -140,7 +134,7 @@ public class GestureScript : MonoBehaviour
         Touch touch = Input.GetTouch(0); // get first touch since touch count is greater than zero
         if (touch.phase == TouchPhase.Began)
         {
-            if (info.collider.transform.IsChildOf(target.objTransform) || info.collider.transform == target.objTransform)
+            if (IsRaycastHitTarget(info, target.objTransform))
             {
                 target.touchBeginHit = true;
                 //target.beginDrag?.Invoke();
@@ -148,9 +142,6 @@ public class GestureScript : MonoBehaviour
         }
         else if (touch.phase == TouchPhase.Canceled || touch.phase == TouchPhase.Ended)
         {
-            if (target.currTimer <= tapDurationThreshold)
-                onTouchTap.Invoke(info.point);
-
             target.currTimer = 0;
             target.touchBeginHit = false;
             target.canDrag = false;
@@ -195,9 +186,13 @@ public class GestureScript : MonoBehaviour
     {
         return currGestureEvent == g_Event;
     }
-
     bool CanChangeGestureTo(GestureEvent g_Event)
     {
         return IsCurrGestureEvent(GestureEvent.None) || IsCurrGestureEvent(g_Event);
+    }
+
+    bool IsRaycastHitTarget(RaycastHit info, Transform targetTransform)
+    {
+        return info.collider.transform.IsChildOf(targetTransform) || info.collider.transform == targetTransform;
     }
 }

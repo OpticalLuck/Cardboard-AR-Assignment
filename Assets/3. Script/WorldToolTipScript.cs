@@ -5,9 +5,10 @@ using UnityEngine;
 public class WorldToolTipScript : MonoBehaviour
 {
     [SerializeField] private bool visibleOnStart;
-    
+    private Canvas canvas;
     void Start()
     {
+        canvas = GetComponentInChildren<Canvas>();
         gameObject.SetActive(visibleOnStart);
     }
 
@@ -16,5 +17,15 @@ public class WorldToolTipScript : MonoBehaviour
     {
         if (Camera.current != null)
             transform.LookAt(Camera.current.transform, Vector3.up);
+    }
+
+    public void SetCanvasContent(GameObject prefab)
+    {
+        foreach(RectTransform child in canvas.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        Instantiate(prefab, canvas.transform);
     }
 }

@@ -9,6 +9,13 @@ struct MeshMaterialGroup
     public Transform transform;
     public List<Material> materials;
 }
+
+[Serializable]
+struct ColliderToCanvasLinker
+{
+    public Collider collider;
+    public GameObject prefab;
+}
 public class ARObject : MonoBehaviour
 {
     private ARRaycastManager raycastManager;
@@ -17,6 +24,11 @@ public class ARObject : MonoBehaviour
     [SerializeField] private float minPinchScale;
     [SerializeField] private float maxPinchScale;
     [SerializeField] private WorldToolTipScript toolTip;
+    [SerializeField] private List<ColliderToCanvasLinker> Information;
+
+    public LayerMask skinLayer;
+    public LayerMask internalLayer;
+
     private List<MeshMaterialGroup> materialList = new List<MeshMaterialGroup>();
     void Start()
     {
@@ -26,7 +38,6 @@ public class ARObject : MonoBehaviour
         GestureScript.OnTwoFingerDrag.AddListener(RotateObject);
         GestureScript.RegisterDragCallbacks(transform, null, MoveObject, null);
         
-        GestureScript.OnDeviceTap.AddListener(Testtooltip);
         foreach (var meshTransform in meshTransforms)
         {
             MeshMaterialGroup grp = new MeshMaterialGroup();
@@ -40,19 +51,47 @@ public class ARObject : MonoBehaviour
             }
             materialList.Add(grp);
         }
-    }
 
-    private void Testtooltip(Vector3 hit)
-    {
-        toolTip.transform.position = hit;
+        FocusOnSystem(0);
     }
-
     private void OnDestroy()
     {
         GestureScript.OnPinchZoom.RemoveListener(ScaleObject);
         GestureScript.UnRegisterDragCallbacks(transform);
         GestureScript.OnTwoFingerDrag.RemoveListener(RotateObject);
     }
+
+    private void Update()
+    {
+        if(Input.touchCount == 1)
+        {
+            CheckBodyTap();
+        }
+    }
+
+    private void CheckBodyTap()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+
+        RaycastHit info;
+        if (Physics.Raycast(ray: ray,
+            hitInfo: out info,
+            maxDistance: Mathf.Infinity,
+            layerMask: internalLayer))
+        {
+            Testtooltip(info.point, info.collider);
+        }
+    }
+    private void Testtooltip(Vector3 hit, Collider collider)
+    {
+        toolTip.gameObject.SetActive(true);
+        toolTip.transform.position = hit;
+
+        var content = Information.Find(x => x.collider == collider).prefab;
+        if(content != null)
+            toolTip.SetCanvasContent(content);
+    }
+
 
     public void FocusOnSystem(int index)
     {
@@ -75,7 +114,8 @@ public class ARObject : MonoBehaviour
             return;
         }
 
-        SetTransparencyInMaterialGroup(0, 0.6f); //Set skin to translucent
+        toolTip.gameObject.SetActive(false);
+        SetTransparencyInMaterialGroup(0, 0.6f, false); //Set skin to translucent
         for (int i = 1; i < materialList.Count; i++)
         {
             if(i == index)
@@ -89,7 +129,7 @@ public class ARObject : MonoBehaviour
         }
     }
 
-    void SetTransparencyInMaterialGroup(int index, float transparency)
+    void SetTransparencyInMaterialGroup(int index, float transparency, bool raycast = true)
     {
         if(transparency <= 0.00001f)
         {
