@@ -16,6 +16,7 @@ public class ARObject : MonoBehaviour
     [SerializeField] private List<Transform> meshTransforms;
     [SerializeField] private float minPinchScale;
     [SerializeField] private float maxPinchScale;
+    [SerializeField] private WorldToolTipScript toolTip;
     private List<MeshMaterialGroup> materialList = new List<MeshMaterialGroup>();
     void Start()
     {
@@ -24,7 +25,8 @@ public class ARObject : MonoBehaviour
         GestureScript.OnPinchZoom.AddListener(ScaleObject);
         GestureScript.OnTwoFingerDrag.AddListener(RotateObject);
         GestureScript.RegisterDragCallbacks(transform, null, MoveObject, null);
-
+        
+        GestureScript.OnDeviceTap.AddListener(Testtooltip);
         foreach (var meshTransform in meshTransforms)
         {
             MeshMaterialGroup grp = new MeshMaterialGroup();
@@ -38,6 +40,11 @@ public class ARObject : MonoBehaviour
             }
             materialList.Add(grp);
         }
+    }
+
+    private void Testtooltip(Vector3 hit)
+    {
+        toolTip.transform.position = hit;
     }
 
     private void OnDestroy()

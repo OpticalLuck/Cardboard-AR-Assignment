@@ -12,7 +12,9 @@ public class GestureScript : MonoBehaviour
 
     public static UnityEvent<float> OnPinchZoom => script.onPinchZoom;
     public static UnityEvent<Vector2> OnTwoFingerDrag => script.onTwoFingerDrag;
+    public static UnityEvent<Vector3> OnDeviceTap => script.onTouchTap;
 
+    private UnityEvent<Vector3> onTouchTap = new UnityEvent<Vector3>();
     private UnityEvent<float> onPinchZoom = new UnityEvent<float>();
     private UnityEvent<Vector2> onTwoFingerDrag = new UnityEvent<Vector2>();
 
@@ -38,7 +40,6 @@ public class GestureScript : MonoBehaviour
     }
 
     #region Gestures
-
     void TwoFingerGestureCheck()
     {
         Touch touchZero = Input.GetTouch(0);
@@ -84,12 +85,14 @@ public class GestureScript : MonoBehaviour
         public bool touchBeginHit;
         public bool canDrag;
 
-        public UnityAction beginDrag;
+        //public UnityAction beginDrag;
         public UnityAction<Vector2> duringDrag;
-        public UnityAction endDrag;
+        //public UnityAction endDrag;
     }
     List<DragData> recordedobj;
 
+    float tapDurationThreshold = 0.5f;
+    float longtapDuration = 1.0f;
     public static void RegisterDragCallbacks(Transform target, UnityAction beginDrag, UnityAction<Vector2> dragging, UnityAction endDrag, float beginDragTimer = 1)
     {
         if (script.recordedobj == null)
@@ -97,9 +100,9 @@ public class GestureScript : MonoBehaviour
         DragData data = new DragData();
         data.objTransform = target;
         data.setTimer = beginDragTimer;
-        data.beginDrag = beginDrag;
+        //data.beginDrag = beginDrag;
         data.duringDrag = dragging;
-        data.endDrag = endDrag;
+        //data.endDrag = endDrag;
 
         data.currTimer = 0;
         data.canDrag = false;
@@ -140,16 +143,19 @@ public class GestureScript : MonoBehaviour
             if (info.collider.transform.IsChildOf(target.objTransform) || info.collider.transform == target.objTransform)
             {
                 target.touchBeginHit = true;
-                target.beginDrag?.Invoke();
+                //target.beginDrag?.Invoke();
             }
         }
         else if (touch.phase == TouchPhase.Canceled || touch.phase == TouchPhase.Ended)
         {
+            if (target.currTimer <= tapDurationThreshold)
+                onTouchTap.Invoke(info.point);
+
             target.currTimer = 0;
             target.touchBeginHit = false;
             target.canDrag = false;
 
-            target.endDrag?.Invoke();
+            //target.endDrag?.Invoke();
         }
         else
         {
