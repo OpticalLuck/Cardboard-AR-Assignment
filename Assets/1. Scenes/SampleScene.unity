@@ -154,7 +154,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &131075954
 RectTransform:
   m_ObjectHideFlags: 0
@@ -491,7 +491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.y
@@ -608,7 +608,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.y
@@ -860,7 +860,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 20
+  far clip plane: 1000
   field of view: 26.991467
   orthographic: 0
   orthographic size: 5
@@ -986,7 +986,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1125,7 +1125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1231,7 +1231,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1380,7 +1380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1497,7 +1497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: 482523547398906107, guid: 4ef118ad49550934f9c2a10f053e3fdc, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1606,9 +1606,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eebd7580bce11f41bf736b762af8ffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mask:
-    serializedVersion: 2
-    m_Bits: 9
 --- !u!1 &1714134239
 GameObject:
   m_ObjectHideFlags: 0

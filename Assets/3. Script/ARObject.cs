@@ -13,7 +13,7 @@ struct MeshMaterialGroup
 [Serializable]
 struct ColliderToCanvasLinker
 {
-    public Collider collider;
+    public List<Collider> colliders;
     public GameObject prefab;
 }
 public class ARObject : MonoBehaviour
@@ -87,7 +87,7 @@ public class ARObject : MonoBehaviour
         toolTip.gameObject.SetActive(true);
         toolTip.transform.position = hit;
 
-        var content = Information.Find(x => x.collider == collider).prefab;
+        var content = Information.Find(x => x.colliders.Find(y => y == collider)).prefab;
         if(content != null)
             toolTip.SetCanvasContent(content);
     }
