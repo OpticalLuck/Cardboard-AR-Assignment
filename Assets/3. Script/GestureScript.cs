@@ -12,6 +12,7 @@ public class GestureScript : MonoBehaviour
     public static UnityEvent<float> OnPinchZoom => script.onPinchZoom;
     public static UnityEvent<Vector2> OnTwoFingerDrag => script.onTwoFingerDrag;
 
+    public static bool isGesturing => script.currGestureEvent != GestureEvent.None;
     private UnityEvent<float> onPinchZoom = new UnityEvent<float>();
     private UnityEvent<Vector2> onTwoFingerDrag = new UnityEvent<Vector2>();
 
@@ -34,6 +35,8 @@ public class GestureScript : MonoBehaviour
             TwoFingerGestureCheck();
         else
             SetGestureEvent(GestureEvent.None);
+
+        GameObject.Find("DebugText").GetComponent<TMPro.TMP_Text>().text = IsTouchOverGameObject().ToString();
     }
 
     #region Gestures
@@ -188,9 +191,19 @@ public class GestureScript : MonoBehaviour
     }
     bool CanChangeGestureTo(GestureEvent g_Event)
     {
-        return IsCurrGestureEvent(GestureEvent.None) || IsCurrGestureEvent(g_Event);
+        return (IsCurrGestureEvent(GestureEvent.None) || IsCurrGestureEvent(g_Event)) && !IsTouchOverGameObject();
     }
 
+    bool IsTouchOverGameObject()
+    {
+        bool pointerOver = false;
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(i))
+                pointerOver = true;
+        }
+        return pointerOver;
+    }
     bool IsRaycastHitTarget(RaycastHit info, Transform targetTransform)
     {
         return info.collider.transform.IsChildOf(targetTransform) || info.collider.transform == targetTransform;

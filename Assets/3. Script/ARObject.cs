@@ -86,12 +86,10 @@ public class ARObject : MonoBehaviour
     {
         toolTip.gameObject.SetActive(true);
         toolTip.transform.position = hit;
-
         var content = Information.Find(x => x.colliders.Find(y => y == collider)).prefab;
         if(content != null)
             toolTip.SetCanvasContent(content);
     }
-
 
     public void FocusOnSystem(int index)
     {
@@ -100,7 +98,7 @@ public class ARObject : MonoBehaviour
 
         if (index == 0) //hides internal
         {
-            for (int i = 1; i < materialList.Count; i++)
+            for (int i = 0; i < materialList.Count; i++)
             {
                 if (i == index)
                 {
@@ -186,5 +184,4 @@ public class ARObject : MonoBehaviour
             transform.localScale = newScale;
         }
     }
-
 }

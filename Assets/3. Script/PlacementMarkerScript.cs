@@ -8,6 +8,7 @@ public class PlacementMarkerScript : MonoBehaviour
 {
     private ARRaycastManager rayManager;
     private GameObject visual;
+    [SerializeField] private TrackableType trackType;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +22,7 @@ public class PlacementMarkerScript : MonoBehaviour
     void Update()
     {
         List<ARRaycastHit> hits = new List<ARRaycastHit>();
-        rayManager.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hits, TrackableType.Planes);
+        rayManager.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hits, trackType);
 
         if (hits.Count > 0)
         {
@@ -32,5 +33,10 @@ public class PlacementMarkerScript : MonoBehaviour
         }
         else
             visual.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        visual.SetActive(false);
     }
 }

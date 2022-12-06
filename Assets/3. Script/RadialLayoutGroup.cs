@@ -6,20 +6,33 @@ using UnityEngine.UI;
 public class RadialLayoutGroup : LayoutGroup
 {
     public enum Orientation { Clockwise, AntiClockWise }
-    public Orientation orientation;
-    public float fDistance;
-    public bool equalSpacing;
-    public bool mirror;
-    [Range(0f, 360f)]
-    public float CurrAngle;
-
+    [SerializeField] private Orientation orientation;
     [Range(0f, 360f)]
     [SerializeField] private float StartAngle, MaxAngle;
+    [SerializeField] private float distance;
+    [SerializeField] private bool equalSpacing;
+    [SerializeField] private bool mirror;
 
-    protected override void Start()
+    private float CurrAngle;
+
+    public float radius
     {
-        base.Start();
-        CurrAngle = StartAngle;
+        get { return distance; }
+        set
+        {
+            distance = value;
+            CalculateRadial();
+        }
+    }
+    public float currAngle
+    {
+        get { return CurrAngle; }
+
+        set
+        {
+            CurrAngle = value;
+            CalculateRadial();
+        }
     }
 
     protected override void OnEnable() { base.OnEnable(); CalculateRadial(); }
@@ -30,7 +43,6 @@ public class RadialLayoutGroup : LayoutGroup
 
         if (!Application.isPlaying)
         {
-            //CurrAngle = StartAngle;
             CalculateRadial();
         }
     }
@@ -61,7 +73,7 @@ public class RadialLayoutGroup : LayoutGroup
         if (equalSpacing)
             MaxAngle = 360 - (360 / transform.childCount);
 
-       
+
         //Calc offset angle
         float fOffsetAngle = (MaxAngle) / (transform.childCount - 1);
         if (orientation == Orientation.Clockwise) fOffsetAngle *= -1;
@@ -91,27 +103,11 @@ public class RadialLayoutGroup : LayoutGroup
                 DrivenTransformProperties.AnchoredPosition |
                 DrivenTransformProperties.Pivot);
                 Vector3 vPos = new Vector3(Mathf.Cos(fAngle * Mathf.Deg2Rad), Mathf.Sin(fAngle * Mathf.Deg2Rad), 0);
-                child.localPosition = vPos * fDistance;
+                child.localPosition = vPos * distance;
                 //Force objects to be center aligned, this can be changed however I'd suggest you keep all of the objects with the same anchor points.
                 child.anchorMin = child.anchorMax = child.pivot = new Vector2(0.5f, 0.5f);
                 fAngle += fOffsetAngle;
             }
         }
-
-    }
-    private void Update()
-    {
-#if DEBUG
-        if(Input.GetKey(KeyCode.DownArrow))
-        {
-            CurrAngle += 100 * Time.deltaTime;
-            CalculateRadial();
-        }
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            CurrAngle -= 100 * Time.deltaTime;
-            CalculateRadial();
-        }
-#endif  
     }
 }
