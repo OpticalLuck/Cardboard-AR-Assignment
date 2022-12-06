@@ -140,9 +140,21 @@ public class ARObject : MonoBehaviour
             materialList[index].transform.gameObject.SetActive(true);
             foreach(var material in materialList[index].materials)
             {
-                var color = material.GetColor("_Color");
-                color.a = transparency;
-                material.SetColor("_Color", color);
+                string param_Opacity = "_Opacity";
+                if (material.HasFloat(param_Opacity))
+                {
+                    var alpha = material.GetFloat(param_Opacity);
+                    alpha = transparency;
+                    material.SetFloat(param_Opacity, alpha);
+                }
+
+                string param_Color = "_Color";
+                if (material.HasColor(param_Color))
+                {
+                    var color = material.GetColor(param_Color);
+                    color.a = transparency;
+                    material.SetColor(param_Color, color);
+                }
             }
         }
     }
