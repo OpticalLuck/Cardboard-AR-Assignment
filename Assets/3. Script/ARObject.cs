@@ -30,6 +30,7 @@ public class ARObject : MonoBehaviour
     public LayerMask internalLayer;
 
     private List<MeshMaterialGroup> materialList = new List<MeshMaterialGroup>();
+
     void Start()
     {
         raycastManager = FindObjectOfType<ARRaycastManager>();
@@ -63,7 +64,7 @@ public class ARObject : MonoBehaviour
 
     private void Update()
     {
-        if(Input.touchCount == 1)
+        if (Input.touchCount == 1)
         {
             CheckBodyTap();
         }
