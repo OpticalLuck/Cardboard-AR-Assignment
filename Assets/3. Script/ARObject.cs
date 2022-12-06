@@ -97,6 +97,8 @@ public class ARObject : MonoBehaviour
         if (index >= materialList.Count)
             return;
 
+        toolTip.gameObject.SetActive(false);
+        
         if (index == 0) //hides internal
         {
             for (int i = 0; i < materialList.Count; i++)
@@ -113,7 +115,7 @@ public class ARObject : MonoBehaviour
             return;
         }
 
-        toolTip.gameObject.SetActive(false);
+        
         SetTransparencyInMaterialGroup(0, 0.6f, false); //Set skin to translucent
         for (int i = 1; i < materialList.Count; i++)
         {
