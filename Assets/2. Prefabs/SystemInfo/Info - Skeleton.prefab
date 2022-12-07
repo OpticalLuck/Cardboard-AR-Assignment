@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2133552121949723251}
   - component: {fileID: 3892285350432420233}
   m_Layer: 5
-  m_Name: Info - Lungs
+  m_Name: Info - Skeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,8 +200,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2595175109646836486}
   m_HandleRect: {fileID: 4688521292464709}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.9999998
+  m_Size: 0.5343222
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -242,7 +242,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 569, y: -42.5}
-  m_SizeDelta: {x: 686.4, y: 900}
+  m_SizeDelta: {x: 726.6, y: 900}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1870752221422073147
 CanvasRenderer:
@@ -272,7 +272,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8990dd05078c4bf40b1648a4060d912e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 095ed509f83691f44a6080db1c090ffa, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -349,32 +349,27 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The lungs are pyramid-shaped, paired organs that are connected to the
-    trachea by the right and left bronchi; on the inferior surface, the lungs are
-    bordered by the diaphragm. The diaphragm is the flat, dome-shaped muscle located
-    at the base of the lungs and thoracic cavity. The lungs are enclosed by the pleurae,
-    which are attached to the mediastinum. The right lung is shorter and wider than
-    the left lung, and the left lung occupies a smaller volume than the right. The
-    cardiac notch is an indentation on the surface of the left lung, and it allows
-    space for the heart. The apex of the lung is the superior region, whereas the
-    base is the opposite region near the diaphragm. The costal surface of the lung
-    borders the ribs. The mediastinal surface faces the midline.
-
-    
-
-    Each
-    lung is composed of smaller units called lobes. Fissures separate these lobes
-    from each other. The right lung consists of three lobes: the superior, middle,
-    and inferior lobes. The left lung consists of two lobes: the superior and inferior
-    lobes. A bronchopulmonary segment is a division of a lobe, and each lobe houses
-    multiple bronchopulmonary segments. Each segment receives air from its own tertiary
-    bronchus and is supplied with blood by its own artery. Some diseases of the lungs
-    typically affect one or more bronchopulmonary segments, and in some cases, the
-    diseased segments can be surgically removed with little influence on neighboring
-    segments. A pulmonary lobule is a subdivision formed as the bronchi branch into
-    bronchioles. Each lobule receives its own large bronchiole that has multiple
-    branches. An interlobular septum is a wall, composed of connective tissue, which
-    separates lobules from one another.'
+  m_text: "The skeletal system is the organ system that provides an internal framework
+    for the human body. Why do you need a skeletal system? Try to imagine what you
+    would look like without it. You would be a soft, wobbly pile of skin containing
+    muscles and internal organs but no bones. You might look something like a very
+    large slug. Not that you would be able to see yourself \u2014 folds of skin would
+    droop down over your eyes and block your vision because of your lack of skull
+    bones. You could push the skin out of the way if you could only move your arms,
+    but you need bones for that as well!\n\n<size=150%>Components of the Skeletal
+    System\n<size=100%>\nIn adults, the skeletal system includes 206 bones, many
+    of which are shown in Figure  14.2.2 . Bones are organs made of dense connective
+    tissues, mainly the tough protein collagen. Bones contain blood vessels, nerves,
+    and other tissues. Bones are hard and rigid due to deposits of calcium and other
+    mineral salts within their living tissues. Locations, where two or more bones
+    meet, are called joints. Many joints allow bones to move like levers. For example,
+    your elbow is a joint that allows you to bend and straighten your arm.\r\n\r\nBesides
+    bones, the skeletal system includes cartilage and ligaments.\r\n\r\n1. Cartilage
+    is a type of dense connective tissue, made of tough protein fibers. It is strong
+    but flexible and very smooth. It covers the ends of bones at joints, providing
+    a smooth surface for bones to move over.\r\n2. Ligaments are bands of fibrous
+    connective tissue that hold bones together. They keep the bones of the skeleton
+    in place.\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -636,7 +631,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lungs
+  m_text: Skeletal System
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

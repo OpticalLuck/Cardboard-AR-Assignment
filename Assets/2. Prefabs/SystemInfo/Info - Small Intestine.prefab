@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2133552121949723251}
   - component: {fileID: 3892285350432420233}
   m_Layer: 5
-  m_Name: Info - Lungs
+  m_Name: Info - Small Intestine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,8 +200,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2595175109646836486}
   m_HandleRect: {fileID: 4688521292464709}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.4352728
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -349,32 +349,30 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The lungs are pyramid-shaped, paired organs that are connected to the
-    trachea by the right and left bronchi; on the inferior surface, the lungs are
-    bordered by the diaphragm. The diaphragm is the flat, dome-shaped muscle located
-    at the base of the lungs and thoracic cavity. The lungs are enclosed by the pleurae,
-    which are attached to the mediastinum. The right lung is shorter and wider than
-    the left lung, and the left lung occupies a smaller volume than the right. The
-    cardiac notch is an indentation on the surface of the left lung, and it allows
-    space for the heart. The apex of the lung is the superior region, whereas the
-    base is the opposite region near the diaphragm. The costal surface of the lung
-    borders the ribs. The mediastinal surface faces the midline.
-
-    
-
-    Each
-    lung is composed of smaller units called lobes. Fissures separate these lobes
-    from each other. The right lung consists of three lobes: the superior, middle,
-    and inferior lobes. The left lung consists of two lobes: the superior and inferior
-    lobes. A bronchopulmonary segment is a division of a lobe, and each lobe houses
-    multiple bronchopulmonary segments. Each segment receives air from its own tertiary
-    bronchus and is supplied with blood by its own artery. Some diseases of the lungs
-    typically affect one or more bronchopulmonary segments, and in some cases, the
-    diseased segments can be surgically removed with little influence on neighboring
-    segments. A pulmonary lobule is a subdivision formed as the bronchi branch into
-    bronchioles. Each lobule receives its own large bronchiole that has multiple
-    branches. An interlobular septum is a wall, composed of connective tissue, which
-    separates lobules from one another.'
+  m_text: "<size=140%>\nWhat is the diaphragm?\n<size=100%>\nThe diaphragm is a muscle
+    that helps you inhale and exhale (breathe in and out). This thin, dome-shaped
+    muscle sits below your lungs and heart. It\u2019s attached to your sternum (a
+    bone in the middle of your chest), the bottom of your rib cage and your spine.
+    Your diaphragm separates your chest from your abdominal cavity (belly).\r\n\r\nIn
+    addition to helping you breathe, your diaphragm increases pressure inside your
+    abdomen. This helps with other important functions, such as getting rid of your
+    urine (pee) and feces (poop). It helps prevent acid reflux by putting pressure
+    on your esophagus (food tube in your throat). Your esophagus and several nerves
+    and blood vessels run through openings in the diaphragm.\n\n<size=140%>\nWhat
+    does the diaphragm do?\n<size=100%>\nThe diaphragm plays a critical role in the
+    respiratory system. When you breathe in, your diaphragm contracts (tightens)
+    and flattens, moving down towards your abdomen. This movement creates a vacuum
+    in your chest, allowing your chest to expand (get bigger) and pull in air. When
+    you breathe out, your diaphragm relaxes and curves back up as your lungs push
+    the air out.\r\n\r\nSeveral nerves, soft tissues and blood vessels pass through
+    the diaphragm. These include the:\n- Aorta, a big artery that carries your blood
+    away from your heart to the rest of your body.\r\n- Esophagus, a hollow tube
+    that connects the throat to the stomach. Food and liquids move through the esophagus
+    to the stomach.\r\n- Inferior vena cava, a vein that carries blood to your heart.\r\n-
+    Phrenic nerve, which controls the diaphragm\u2019s movement.\r\n- Thoracic duct,
+    a vessel that carries a fluid called lymph through the body as part of the lymphatic
+    system.\r\n- Vagus nerve, which has many important jobs, including helping to
+    control the digestive system."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -636,7 +634,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lungs
+  m_text: 'Diaphragm
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

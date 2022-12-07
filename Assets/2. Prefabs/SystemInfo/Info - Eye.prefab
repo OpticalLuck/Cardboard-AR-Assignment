@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2133552121949723251}
   - component: {fileID: 3892285350432420233}
   m_Layer: 5
-  m_Name: Info - Lungs
+  m_Name: Info - Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,8 +200,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2595175109646836486}
   m_HandleRect: {fileID: 4688521292464709}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.61171275
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -242,7 +242,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 569, y: -42.5}
-  m_SizeDelta: {x: 686.4, y: 900}
+  m_SizeDelta: {x: 726.6, y: 607.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1870752221422073147
 CanvasRenderer:
@@ -272,7 +272,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8990dd05078c4bf40b1648a4060d912e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0d7a9e76e3d2f16418539731ba9acf90, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -349,32 +349,40 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The lungs are pyramid-shaped, paired organs that are connected to the
-    trachea by the right and left bronchi; on the inferior surface, the lungs are
-    bordered by the diaphragm. The diaphragm is the flat, dome-shaped muscle located
-    at the base of the lungs and thoracic cavity. The lungs are enclosed by the pleurae,
-    which are attached to the mediastinum. The right lung is shorter and wider than
-    the left lung, and the left lung occupies a smaller volume than the right. The
-    cardiac notch is an indentation on the surface of the left lung, and it allows
-    space for the heart. The apex of the lung is the superior region, whereas the
-    base is the opposite region near the diaphragm. The costal surface of the lung
-    borders the ribs. The mediastinal surface faces the midline.
+  m_text: '1. The main parts of the human eye are the cornea, iris, pupil, aqueous
+    humor, lens, vitreous humor, retina, and optic nerve.
 
-    
+    2. Light enters the
+    eye by passing through the transparent cornea and aqueous humor. The iris controls
+    the size of the pupil, which is the opening that allows light to enter the lens.
+    Light is focused by the lens and goes through the vitreous humor to the retina.
+    Rods and cones in the retina translate the light into an electrical signal that
+    travels from the optic nerve to the brain.
 
-    Each
-    lung is composed of smaller units called lobes. Fissures separate these lobes
-    from each other. The right lung consists of three lobes: the superior, middle,
-    and inferior lobes. The left lung consists of two lobes: the superior and inferior
-    lobes. A bronchopulmonary segment is a division of a lobe, and each lobe houses
-    multiple bronchopulmonary segments. Each segment receives air from its own tertiary
-    bronchus and is supplied with blood by its own artery. Some diseases of the lungs
-    typically affect one or more bronchopulmonary segments, and in some cases, the
-    diseased segments can be surgically removed with little influence on neighboring
-    segments. A pulmonary lobule is a subdivision formed as the bronchi branch into
-    bronchioles. Each lobule receives its own large bronchiole that has multiple
-    branches. An interlobular septum is a wall, composed of connective tissue, which
-    separates lobules from one another.'
+
+    <b>Cornea:</b> Light enters
+    through the cornea, the transparent outer covering of the eye. The eyeball is
+    rounded, so the cornea acts as a lens. It bends or refracts light.
+
+    <b>Aqueous
+    Humor:</b> The fluid beneath the cornea has a composition similar to that of
+    blood plasma. The aqueous humor helps to shape the cornea and provides nourishment
+    to the eye.
+
+    <b>Iris and Pupil:</b> Light passes through the cornea and aqueous
+    humor through an opening called the pupil. The size of the pupil is determined
+    by the iris, the contractile ring that is associated with eye color. As the pupil
+    dilates (gets bigger), more light enters the eye.
+
+    <b>Lens:</b> While most
+    of the focusing of light is done by the cornea, the lens allows the eye to focus
+    on either near or distant objects. Ciliary muscles surround the lens, relaxing
+    to flatten it to image distant objects and contracting to thicken the lens to
+    image close-up objects.
+
+    <b>Vitreous Humor:</b> A certain distance is required
+    to focus light. The vitreous humor is a transparent watery gel that supports
+    the eye and allows for this distance.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -636,7 +644,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lungs
+  m_text: EyeBalls
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -798,9 +806,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 1091620834578363152}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -888,7 +896,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00012207031}
+  m_AnchoredPosition: {x: 0, y: 0.000061035156}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7270070408139058892
