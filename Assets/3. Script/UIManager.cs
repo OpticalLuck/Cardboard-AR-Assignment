@@ -8,6 +8,7 @@ using UnityEngine.XR.ARFoundation;
 public class UIManager : MonoBehaviour
 {
     private ARRaycastManager raycastManager;
+    private ARPlaneManager planeManager;
 
     PlacementMarkerScript placementMarker;
     [Header("ARObject Spawning")]
@@ -18,6 +19,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Body System Select")]
     [SerializeField] private GameObject selectionLayer;
+    [SerializeField] private TMP_Text header;
     [SerializeField] private Button despawnObjectButton;
     [SerializeField] private Button resetOrientationButton;
     [SerializeField] private RadialLayoutGroup selectionGroup;
@@ -26,6 +28,7 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         raycastManager = FindObjectOfType<ARRaycastManager>();
+        planeManager = FindObjectOfType<ARPlaneManager>();
         placementMarker = FindObjectOfType<PlacementMarkerScript>();
     }
 
@@ -63,11 +66,26 @@ public class UIManager : MonoBehaviour
         LinkButtonToObjectInstance();
         ToggleUILayer(selectionLayer);
         placementMarker.enabled = false;
+
+        planeManager.enabled = false;
+        foreach (var plane in planeManager.trackables)
+            plane.gameObject.SetActive(false);
+
+        raycastManager.raycastPrefab.GetComponent<ARPlaneMeshVisualizer>().trackingStateVisibilityThreshold = UnityEngine.XR.ARSubsystems.TrackingState.None;
+        foreach(var plane in FindObjectsOfType<ARPlaneMeshVisualizer>())
+        {
+            plane.trackingStateVisibilityThreshold = UnityEngine.XR.ARSubsystems.TrackingState.None;
+        }
     }
 
     void OnObjectDestoy()
     {
         placementMarker.enabled = true;
+
+        planeManager.enabled = true;
+        foreach (var plane in planeManager.trackables)
+            plane.gameObject.SetActive(true);
+
         Destroy(objectInstance.gameObject);
         ToggleUILayer(spawnLayer);
         foreach (var btn in selectionGroup.GetComponentsInChildren<Button>())
@@ -81,8 +99,11 @@ public class UIManager : MonoBehaviour
         {
             int temp = i;
             btn.onClick.AddListener(() => objectInstance.FocusOnSystem(temp));
+            btn.onClick.AddListener(() => { header.text = objectInstance.GetSystemName(temp); });
             i++;
         }
+
+        header.text = objectInstance.GetSystemName(0);
     }
 
     void ToggleUILayer(GameObject uiLayer)

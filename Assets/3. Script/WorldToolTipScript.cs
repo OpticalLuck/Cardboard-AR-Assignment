@@ -12,6 +12,7 @@ public class WorldToolTipScript : MonoBehaviour
     {
         canvas = GetComponentInChildren<Canvas>();
         gameObject.SetActive(visibleOnStart);
+        canvas.worldCamera = Camera.main;
     }
 
 #if UNITY_EDITOR

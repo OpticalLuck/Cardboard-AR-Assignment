@@ -187,4 +187,11 @@ public class ARObject : MonoBehaviour
             transform.localScale = newScale;
         }
     }
+
+    public string GetSystemName(int index)
+    {
+        if (index > meshTransforms.Count)
+            return "None";
+        return meshTransforms[index].name;
+    }
 }

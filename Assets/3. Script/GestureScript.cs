@@ -35,8 +35,6 @@ public class GestureScript : MonoBehaviour
             TwoFingerGestureCheck();
         else
             SetGestureEvent(GestureEvent.None);
-
-        GameObject.Find("DebugText").GetComponent<TMPro.TMP_Text>().text = IsTouchOverGameObject().ToString();
     }
 
     #region Gestures

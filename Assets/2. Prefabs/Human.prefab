@@ -337,7 +337,7 @@ GameObject:
   m_Component:
   - component: {fileID: 404729086338424082}
   m_Layer: 0
-  m_Name: Digestive
+  m_Name: Digestive System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -503,7 +503,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3796319745941986553}
   m_Layer: 0
-  m_Name: Respiratory
+  m_Name: Respiratory System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -929,7 +929,7 @@ GameObject:
   - component: {fileID: 2833463728594148849}
   - component: {fileID: 1085138843521488112}
   m_Layer: 7
-  m_Name: Skin
+  m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1336,7 +1336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b88f4678f0433864184bae8fb6d02608, type: 3}
       propertyPath: m_Name
-      value: Skeleton
+      value: Skeletal System
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b88f4678f0433864184bae8fb6d02608, type: 3}
       propertyPath: m_Layer
